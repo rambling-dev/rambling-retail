@@ -1,0 +1,174 @@
+{
+  "version": 1,
+  "projects": {
+    "store-front": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "apps/store-front",
+      "sourceRoot": "apps/store-front/src",
+      "prefix": "rambling-retail",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/store-front",
+            "index": "apps/store-front/src/index.html",
+            "main": "apps/store-front/src/main.ts",
+            "polyfills": "apps/store-front/src/polyfills.ts",
+            "tsConfig": "apps/store-front/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "apps/store-front/src/favicon.ico",
+              "apps/store-front/src/assets"
+            ],
+            "styles": ["apps/store-front/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/store-front/src/environments/environment.ts",
+                  "with": "apps/store-front/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "store-front:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "store-front:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "store-front:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/store-front/tsconfig.app.json",
+              "apps/store-front/tsconfig.spec.json",
+              "apps/store-front/tsconfig.editor.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/store-front/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/store-front/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "store-front-e2e": {
+      "root": "apps/store-front-e2e",
+      "sourceRoot": "apps/store-front-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/store-front-e2e/cypress.json",
+            "tsConfig": "apps/store-front-e2e/tsconfig.e2e.json",
+            "devServerTarget": "store-front:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "store-front:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["apps/store-front-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/store-front-e2e/**/*"]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "schematics": {
+    "@nrwl/workspace": {
+      "library": {
+        "linter": "tslint"
+      }
+    },
+    "@nrwl/cypress": {
+      "cypress-project": {
+        "linter": "tslint"
+      }
+    },
+    "@nrwl/node": {
+      "application": {
+        "linter": "tslint"
+      },
+      "library": {
+        "linter": "tslint"
+      }
+    },
+    "@nrwl/nest": {
+      "application": {
+        "linter": "tslint"
+      },
+      "library": {
+        "linter": "tslint"
+      }
+    },
+    "@nrwl/express": {
+      "application": {
+        "linter": "tslint"
+      },
+      "library": {
+        "linter": "tslint"
+      }
+    },
+    "@nrwl/angular:application": {
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest"
+    }
+  },
+  "defaultProject": "store-front"
+}
